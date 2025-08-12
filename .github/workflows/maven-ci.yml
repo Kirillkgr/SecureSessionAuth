@@ -1,0 +1,32 @@
+# Имя рабочего процесса
+name: Java CI with Maven
+
+# Триггеры для запуска
+on:
+  push:
+    branches: [ "master" ] # или ваша основная ветка
+  pull_request:
+    branches: [ "master" ] # или ваша основная ветка
+
+# Задачи, которые будут выполняться
+jobs:
+  build:
+    # Используем последнюю версию Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Клонируем репозиторий
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Устанавливаем JDK 21 (Corretto)
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+          cache: 'maven' # Кэшируем зависимости Maven
+
+      # 3. Запускаем тесты с помощью Maven
+      - name: Run tests with Maven
+        run: mvn -B test
